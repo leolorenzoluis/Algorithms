@@ -5,19 +5,19 @@ let mutable cacheHits = 0
 let mutable cacheMisses = 0
 
 type Item = { Value : int; Size  : int } 
-// let test = List() 
+let test = List() 
 let cache = Dictionary<_, _>()
 let memoize f =
     fun x ->
         match cache.TryGetValue(x) with
         | (true, v) -> 
             cacheHits <- cacheHits + 1
-            // printfn "Hit for %A - Result is %A" x v
-            // test.Add(x)
+            printfn "Hit for %A - Result is %A" x v
+            test.Add(x)
             v
         | _ ->
             cacheMisses <- cacheMisses + 1
-            // printfn "Miss for %A" x
+            printfn "Miss for %A" x
             let res = f x
             cache.[x] <- res
             res
@@ -135,38 +135,39 @@ let rec knapsack =
         
             let item = items.[n-1]
                 
-            printfn "Current item: (%A, %A). Weight: %A" item.Value item.Size k
+            // printfn "Current item: (%A, %A). Weight: %A" item.Value item.Size k
             // The new item is more than the weight limit                
-            printfn "New item is more than the weight limit. %A; Weight = %A" items.[n-1] k
+            // printfn "New item is more than the weight limit. %A; Weight = %A" items.[n-1] k
             knapsack (n-1, k) 
         | (n, k)                            -> 
             // printfn "============"
             // printfn "N = %A K = %A" n k
             let item = items.[n-1]
             
+            printfn ""
             printfn "============================================= %A" n
             printfn "[%A]: Current item: (%A, %A). Weight: %A" n item.Value item.Size k
             // printfn "Current item value : %A size : %A" item.Value item.Size
             // printfn "Recursing v1 [%A]... n will be %A. Current weight: %A" n (n-1) k
             
             let excludeItem = knapsack (n-1, k)
-
-            printfn "[%A]: Exclude item %A" n excludeItem
+            printfn "[%A]: LEFT  - Include item [%A] CURRENT WEIGHT  [%A]" (n-1) excludeItem k
             // printfn "Current item size - %A" item.Size
             // printfn "V1 - %A" v1
             // printfn ""
             // printfn "Recursing before item [%A]...n will be %A. Current weight: %A" n (n-1) k
             let includeItem = knapsack (n-1, k-item.Size)
             
-            printfn ""
+            printfn "[%A]: RIGHT - Include item [%A] CURRENT WEIGHT  [%A]" (n-1) includeItem k
             printfn "============================================= %A" n
+            printfn ""
             // printfn "%A" (blah + recursiveIndex.ToString())
             // printfn "%A" (blah + (sprintf "(%A, %A)" n k))
             // printfn "%A" blah
             // printfn "%A" blah
             // printfn "Item before value: %A" includeItem
             let v2 = includeItem + item.Value
-            printfn "[%A]: (%A) + (%A) = %A" n includeItem item.Value v2
+            printfn "[%A]: Return value from [%A] (%A) + Current item value (%A) = %A" n (n-1) includeItem item.Value v2
             // printfn "Before item - %A" beforeItem47909245
 
             // printfn "V2 - %A" v2
@@ -174,6 +175,7 @@ let rec knapsack =
             // printfn "N - %A K - %A V1 - %A V2 - %A" n k excludeItem v2
             // if excludeItem > v2 then
             //     test.Add(item)
+            printfn "[%A]: [%A]: Left:(%A) , [%A]: Right:(%A). Weight:(%A)" n (n-1) excludeItem (n-1)  v2 k
             printfn "[%A]: Max(%A, %A)" n excludeItem v2
             // printfn "%A" (blah + (sprintf "(%A, %A)" n k))
             max excludeItem v2
@@ -185,7 +187,12 @@ cacheMisses <- 0
 let res2 = knapsack (N, K)
 printfn "Answer: %d" res2
 printfn "Basket: %A" (Seq.length basket)
-// printfn "Memo hits: %d" cacheHits
-// printfn "Memo misses: %d" cacheMisses
-// printfn "Cache: %A" cache
-// printfn "Test: %A" test
+printfn "Memo hits: %d" cacheHits
+printfn "Memo misses: %d" cacheMisses
+printfn "Cache: %A" cache
+printfn "Test: %A" test
+
+cache
+|> Seq.iter(fun (key) ->
+    printfn "KEY: %A. VALUE: %A" key.Key key.Value
+)
