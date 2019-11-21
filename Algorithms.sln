@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{428C4FCC-313C-472C-9C38-FD3DA8F2A33E}"
-EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Tests", "src\Tests\Tests.fsproj", "{D77A9C70-76AA-42B2-97E4-8D1CA8364F83}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "tests", "tests\Tests.fsproj", "{D77A9C70-76AA-42B2-97E4-8D1CA8364F83}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Algorithms", "src\Algorithms.fsproj", "{24859179-B077-452C-8E17-692FEC627057}"
 EndProject
